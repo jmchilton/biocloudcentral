@@ -29,6 +29,7 @@ class CloudManForm(forms.Form):
     cloud = forms.ModelChoiceField(queryset=models.Cloud.objects.all(),
                                    help_text="Choose from the available clouds. The credentials "\
                                    "you provide below must match (ie, exist on) the chosen cloud.",
+                                   empty_label=None,
                                    widget=forms.Select(attrs={"class": textbox_size,
                                    "onChange": "get_dynamic_fields(this.options[this.selectedIndex].value)"}))
     access_key = forms.CharField(required=True,

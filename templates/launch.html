@@ -80,6 +80,12 @@
         // This also keeps the instance types selected after a submission
         // of the form with errors
         get_dynamic_fields($("#id_cloud option:selected").val());
+
+        // If there is only one option for cloud, simplify the interface 
+        // by making this an advanced option.
+        if($('#id_cloud option').length == 1) {
+            $('#id_cloud').closest("span.standard_startup_options").addClass("advanced_startup_options").hide();
+        }
         
         // Toggle advanced startup options
         $('#hide_advanced_startup_options').click(function(){
@@ -119,7 +125,9 @@
   {% csrf_token %}
   {% for field in form %}
     {% if not field.field.required %}
-       <span class="advanced_startup_options" style="display:none">
+      <span class="advanced_startup_options" style="display:none">
+    {% else %}
+      <span class="standard_startup_options">
     {% endif %}
       <div class="control-group{% if field.errors %} error{% endif %}{% if field.field.required %} required{% endif %}">
         <label class="control-label"{% if field.auto_id and input_type != "multicheckbox" and input_type != "radioset" %} for="{{ field.auto_id }}"{% endif %}>{{ field.label }}
@@ -133,9 +141,7 @@
            {% include "bootstrap_toolkit/field_help.html" with display="block" %}
         </div>
       </div>
-    {% if not field.field.required %}
-      </span>
-    {% endif %}
+    </span>
   {% endfor %}
   <p>
     <a id="hide_advanced_startup_options" style="display: none;" href="#">
